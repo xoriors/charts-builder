@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Chart - Chart.js</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      padding: 20px;
+    }
+
+    #status {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 8px 16px;
+      background: #4CAF50;
+      color: white;
+      border-radius: 6px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 500px;
+      background: #1a1a1a;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="status">● Connected</div>
+  <h1>Revenue Distribution - Pie Chart</h1>
+  <div class="chart-container">
+    <canvas id="chartCanvas"></canvas>
+  </div>
+
+  <!-- CDN Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Your Chart Code -->
+  <script src="chart.js"></script>
+
+  <!-- Live Reload via SSE -->
+  <script>
+    const statusEl = document.getElementById('status');
+    const eventSource = new EventSource('/events');
+
+    eventSource.onmessage = (event) => {
+      if (event.data === 'reload') {
+        statusEl.textContent = '↻ Reloading...';
+        statusEl.style.background = '#FF9800';
+        setTimeout(() => location.reload(), 100);
+      }
+    };
+
+    eventSource.onerror = () => {
+      statusEl.textContent = '● Disconnected';
+      statusEl.style.background = '#f44336';
+      setTimeout(() => {
+        eventSource.close();
+        location.reload();
+      }, 2000);
+    };
+
+    eventSource.onopen = () => {
+      statusEl.textContent = '● Connected';
+      statusEl.style.background = '#4CAF50';
+    };
+  </script>
+</body>
+</html>
