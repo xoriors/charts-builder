@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp:*)",
+      "Bash(npx:*)",
+      "Bash(npm search:*)",
+      "WebSearch",
+      "Bash(npm install:*)",
+      "Bash(npm start)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
