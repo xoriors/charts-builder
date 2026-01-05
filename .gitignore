@@ -1,0 +1,5 @@
+**/node_modules/
+workspaces/
+charts-mcp/dist/
+database/charts.db
+postgres-mcp/
